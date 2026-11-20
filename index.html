@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2c3650">
+<title>for you ♡</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 86 C20 64 6 48 6 30 C6 16 17 6 30 6 C39 6 46 11 50 18 C54 11 61 6 70 6 C83 6 94 16 94 30 C94 48 80 64 50 86Z' fill='%23b84a62'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fredoka:wght@400;500;600&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div id="bursts" aria-hidden="true"></div>
+
+<!-- ============ 1. opening windows ============ -->
+<section class="screen" data-screen="intro" aria-label="hello">
+  <div class="bg bg-knit"></div>
+  <div class="deco hearts" id="intro-hearts" aria-hidden="true"></div>
+  <div class="inner">
+    <div class="win-stack">
+
+      <div class="win" id="w-hello" role="dialog" aria-labelledby="t-hello">
+        <div class="win-bar"><span class="win-title">hello.exe</span><span class="win-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+        <div class="win-body">
+          <img class="chibi" src="img/chibi.png" alt="" width="236" height="236">
+          <p class="win-text" id="t-hello">Do u want to know what is up here?</p>
+          <div class="win-actions">
+            <button class="btn btn-main" type="button" data-act="yes">Yes</button>
+            <button class="btn" type="button" data-act="no">No</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="win win-error" id="w-oops" role="alertdialog" aria-labelledby="t-oops" hidden>
+        <div class="win-bar"><span class="win-title">error.exe</span><span class="win-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+        <div class="win-body">
+          <svg class="warn" viewBox="0 0 64 58" aria-hidden="true"><path d="M32 5 L60 53 H4 Z" fill="#f3d27a" stroke="#232a3b" stroke-width="4" stroke-linejoin="round"/><rect x="29" y="21" width="6" height="18" rx="3" fill="#232a3b"/><rect x="29" y="43" width="6" height="6" rx="3" fill="#232a3b"/></svg>
+          <p class="oops glitch" id="t-oops">OOPS ERROR!</p>
+          <p class="win-text">Try it, please</p>
+          <div class="win-actions">
+            <button class="btn btn-main" type="button" data-act="start">Start</button>
+            <button class="btn" type="button" data-act="ignore">Ignore</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="win" id="w-sure" role="alertdialog" aria-labelledby="t-sure" hidden>
+        <div class="win-bar"><span class="win-title">last_chance.exe</span><span class="win-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+        <div class="win-body">
+          <img class="chibi chibi-sm" src="img/chibi.png" alt="" width="236" height="236">
+          <p class="win-text" id="t-sure">Are u sure about that?</p>
+          <p class="win-sub">Give me a chance</p>
+          <div class="win-actions">
+            <button class="btn btn-main" type="button" data-act="ok">Ok</button>
+            <button class="btn" type="button" data-act="no2">No</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. the surprise page ============ -->
+<section class="screen" data-screen="hub" aria-label="A Surprise just for You">
+  <div class="bg bg-moon"></div>
+  <div class="deco twinkles" id="hub-stars" aria-hidden="true"></div>
+  <div class="inner">
+    <header class="hub-head">
+      <h1 class="title">A Surprise just for You!</h1>
+      <p class="sub" id="hub-sub">tap a picture ♡ <span class="pill" id="count">0/3</span></p>
+    </header>
+    <div class="cards">
+      <button class="card" type="button" data-go="letter" style="--r:-4deg">
+        <span class="tape" aria-hidden="true"></span>
+        <span class="photo"><img src="img/card-letter.jpg" alt="" width="720" height="720"></span>
+        <span class="cap">a letter</span>
+        <span class="seen">opened ♡</span>
+      </button>
+      <button class="card" type="button" data-go="snow" style="--r:3deg">
+        <span class="tape" aria-hidden="true"></span>
+        <span class="photo"><img src="img/card-snow.jpg" alt="" width="640" height="640"></span>
+        <span class="cap">let it snow</span>
+        <span class="seen">opened ♡</span>
+      </button>
+      <button class="card" type="button" data-go="cake" style="--r:-2deg">
+        <span class="tape" aria-hidden="true"></span>
+        <span class="photo"><img src="img/card-cake.jpg" alt="" width="592" height="592"></span>
+        <span class="cap">a little cake</span>
+        <span class="seen">opened ♡</span>
+      </button>
+    </div>
+    <div class="hub-end" id="hub-end" hidden>
+      <p class="sub">one more thing…</p>
+      <button class="next next-gold" type="button" data-go="final">next <span class="arrow">→</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ letter ============ -->
+<section class="screen" data-screen="letter" aria-label="a letter">
+  <div class="bg bg-lace"></div>
+  <div class="deco bokeh" id="letter-bokeh" aria-hidden="true"></div>
+  <div class="inner">
+    <div class="env-wrap" id="env-wrap">
+      <button class="envelope" id="envelope" type="button" aria-label="Open the letter">
+        <span class="env-back"></span>
+        <span class="env-paper"></span>
+        <span class="env-front"></span>
+        <span class="env-flap"></span>
+        <span class="env-to">for Nadir</span>
+        <span class="seal" aria-hidden="true">♥</span>
+      </button>
+      <p class="tap-hint">tap to open ♡</p>
+    </div>
+    <article class="letter" id="letter" hidden>
+      <div class="letter-paper">
+        <p style="--i:0">i wish i can stay with u as much as we possibly can, if it wasn't selfish, i wish u were always stay here. i feel really safe around u if i describe "home" in one word it would be "you".. u see?</p>
+        <p style="--i:1">I feel like God has compensated me through u. when i was left alone u stayed here with me, and made laugh again! how can i forget that, even the day of my twenty birthday, that time i really wished if i could give u a prob gift that u deserve but i couldnt help it. that why now im mading this asbesuly for u, i hope it will make u smile.</p>
+        <p style="--i:2">maaa little mino when i saw u exhausted or sad it hurt cuz i'm not aible to hug u in those moment, i wish if i can gave the world my moon, u deserve to be happy and u will be surely.</p>
+        <p style="--i:3">i don't know how to put my words, but u should really appreciat ur self more if i had two heart i would love u with them both. u can't imagine how u are special for someone else if i catch u saying u don't love ur self again i'mma slap u in the face u know.</p>
+        <p style="--i:4">oh i have so much to tell u and i wish if u can see urself in my eyes u would really love ur self, well i love myself too even tho the things i made in my life isn't much. i only made my mom proud of me i guess, and i'm sure ur dad and mom are proud of u too. u really have so much things to love ur self for and regardless everything u have a liven heart, i can assume it,</p>
+        <p class="shout" style="--i:5">NADIR IF UR READING THIS SMILE FOR ME I LOVE UUU!</p>
+        <p style="--i:6">believe me i still have many word's but i'll keep it for know cuz u will probebly read this in the morning and</p>
+        <p class="shout shout-big" style="--i:7">GOOD MONING MY TWINNN.</p>
+      </div>
+    </article>
+  </div>
+  <button class="next" type="button" data-go="hub">next <span class="arrow">→</span></button>
+</section>
+
+<!-- ============ snowman ============ -->
+<section class="screen screen-stage" data-screen="snow" aria-label="let it snow" id="snow-screen">
+  <div class="bg bg-winter"></div>
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="deco twinkles" id="snow-stars" aria-hidden="true"></div>
+  <div class="moon" aria-hidden="true"></div>
+  <div class="clouds" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <!-- far mountains -->
+  <svg class="layer layer-far" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="mtnFar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c3cbec"/><stop offset=".45" stop-color="#8f9bcb"/><stop offset="1" stop-color="#7a87bb"/></linearGradient>
+      <linearGradient id="mtnNear" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b4bfe6"/><stop offset=".5" stop-color="#8091c6"/><stop offset="1" stop-color="#6c7db6"/></linearGradient>
+      <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9d4ec" stop-opacity="0"/><stop offset=".55" stop-color="#d9d4ec" stop-opacity=".7"/><stop offset="1" stop-color="#d9d4ec" stop-opacity="0"/></linearGradient>
+    </defs>
+    <path d="M0 700 L90 640 L170 600 L250 625 L330 560 L420 520 L500 575 L580 545 L660 600 L740 560 L830 500 L910 540 L990 590 L1070 545 L1160 505 L1250 560 L1330 600 L1420 550 L1500 590 L1600 560 V820 H0 Z" fill="url(#mtnFar)"/>
+    <g fill="#eef1fb" opacity=".85">
+      <path d="M420 520 L392 540 L404 542 L414 536 L424 547 L436 538 L448 542 Z"/>
+      <path d="M830 500 L800 522 L812 524 L822 518 L834 530 L846 520 L860 526 Z"/>
+      <path d="M1160 505 L1132 527 L1144 528 L1154 522 L1166 533 L1178 524 L1190 529 Z"/>
+      <path d="M330 560 L310 574 L320 576 L330 570 L340 579 L350 572 Z"/>
+      <path d="M1420 550 L1400 564 L1410 566 L1420 560 L1430 569 L1440 562 Z"/>
+    </g>
+    <path d="M0 760 L120 700 L220 650 L310 690 L420 640 L520 690 L640 660 L760 710 L880 670 L980 700 L1100 650 L1210 690 L1320 660 L1450 700 L1600 670 V840 H0 Z" fill="url(#mtnNear)"/>
+    <rect x="0" y="690" width="1600" height="150" fill="url(#fog)"/>
+  </svg>
+
+  <!-- hills, pine trees and the little cabin -->
+  <svg class="layer layer-mid" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="hillMid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e4e9f9"/><stop offset=".5" stop-color="#c9d3f0"/><stop offset="1" stop-color="#b3c0e6"/></linearGradient>
+      <radialGradient id="winGlow"><stop offset="0" stop-color="#ffd98a" stop-opacity=".9"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></radialGradient>
+      <symbol id="pine" viewBox="0 0 100 200">
+        <rect x="45" y="168" width="10" height="32" fill="#3b2c2a"/>
+        <path d="M50 4 L74 52 L62 50 L84 96 L68 94 L92 142 L72 140 L98 178 L2 178 L28 140 L8 142 L32 94 L16 96 L38 50 L26 52 Z" fill="#2c3b64"/>
+        <path d="M50 4 L74 52 L62 50 L84 96 L68 94 L92 142 L72 140 L98 178 L50 178 Z" fill="#101a3a" opacity=".22"/>
+        <path d="M50 4 L62 30 L56 31 L50 23 L44 31 L38 30 Z" fill="#f4f7ff"/>
+        <path d="M26 52 Q38 45 50 50 Q62 45 74 52 L70 57 Q60 52 50 57 Q40 52 30 57 Z" fill="#eef2fd"/>
+        <path d="M16 96 Q34 87 50 94 Q66 87 84 96 L80 102 Q66 95 50 101 Q34 95 20 102 Z" fill="#eef2fd"/>
+        <path d="M8 142 Q30 131 50 140 Q70 131 92 142 L88 148 Q70 140 50 147 Q30 140 12 148 Z" fill="#eef2fd"/>
+        <path d="M2 178 Q26 167 50 176 Q74 167 98 178 L94 184 Q74 176 50 183 Q26 176 6 184 Z" fill="#e3e9fa"/>
+      </symbol>
+    </defs>
+    <path d="M0 820 Q200 740 420 770 Q640 800 820 760 Q1040 715 1260 765 Q1440 800 1600 760 V1000 H0 Z" fill="url(#hillMid)"/>
+    <g opacity=".82">
+      <use href="#pine" x="20" y="660" width="80" height="160"/>
+      <use href="#pine" x="85" y="610" width="95" height="190"/>
+      <use href="#pine" x="175" y="652" width="66" height="132"/>
+      <use href="#pine" x="250" y="604" width="86" height="172"/>
+      <use href="#pine" x="340" y="650" width="62" height="124"/>
+      <use href="#pine" x="1170" y="628" width="72" height="144"/>
+      <use href="#pine" x="1235" y="578" width="96" height="192"/>
+      <use href="#pine" x="1320" y="626" width="76" height="152"/>
+      <use href="#pine" x="1395" y="612" width="88" height="176"/>
+      <use href="#pine" x="1480" y="660" width="66" height="132"/>
+      <use href="#pine" x="1530" y="620" width="80" height="160"/>
+    </g>
+    <use href="#pine" x="540" y="668" width="60" height="120"/>
+    <use href="#pine" x="590" y="700" width="44" height="88"/>
+    <use href="#pine" x="1030" y="650" width="60" height="120"/>
+    <use href="#pine" x="1076" y="690" width="42" height="84"/>
+    <!-- cabin -->
+    <g>
+      <ellipse cx="972" cy="770" rx="90" ry="14" fill="url(#winGlow)" opacity=".5"/>
+      <rect x="930" y="722" width="84" height="42" fill="#6a4a3c"/>
+      <path d="M930 733 H1014 M930 744 H1014 M930 755 H1014" stroke="#57392e" stroke-width="2"/>
+      <rect x="996" y="690" width="11" height="26" fill="#583d33"/>
+      <path d="M994 690 Q1001 684 1009 690 Z" fill="#f4f7ff"/>
+      <path d="M918 726 L972 688 L1026 726 Z" fill="#f2f5ff"/>
+      <path d="M918 726 L1026 726 L1022 733 L922 733 Z" fill="#c3cdee"/>
+      <path d="M972 688 L1026 726 L1000 726 Z" fill="#d7def5"/>
+      <circle cx="950" cy="741" r="16" fill="url(#winGlow)" class="win-glow"/>
+      <circle cx="994" cy="741" r="16" fill="url(#winGlow)" class="win-glow"/>
+      <rect x="942" y="734" width="16" height="14" rx="1.5" fill="#ffd98a"/>
+      <rect x="986" y="734" width="16" height="14" rx="1.5" fill="#ffd98a"/>
+      <path d="M950 734 V748 M942 741 H958 M994 734 V748 M986 741 H1002" stroke="#6a4a3c" stroke-width="1.6"/>
+      <rect x="966" y="742" width="13" height="22" rx="1.5" fill="#463027"/>
+      <g class="smoke-puffs" fill="#e8ebf8">
+        <circle cx="1001" cy="680" r="6"/><circle cx="1003" cy="680" r="7"/><circle cx="999" cy="680" r="6.5"/>
+      </g>
+    </g>
+    <rect x="0" y="790" width="1600" height="90" fill="url(#fog)" opacity=".6"/>
+  </svg>
+
+  <!-- snowy ground + street lamp -->
+  <svg class="layer layer-near" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="groundG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fafcff"/><stop offset=".45" stop-color="#e6ecfa"/><stop offset="1" stop-color="#c9d4f0"/></linearGradient>
+      <radialGradient id="lampPool"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".75"/><stop offset=".55" stop-color="#ffd9a0" stop-opacity=".22"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient>
+      <radialGradient id="lampHalo"><stop offset="0" stop-color="#fff1cf" stop-opacity=".95"/><stop offset=".35" stop-color="#ffdca0" stop-opacity=".45"/><stop offset="1" stop-color="#ffdca0" stop-opacity="0"/></radialGradient>
+      <linearGradient id="lampCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe3b0" stop-opacity=".42"/><stop offset="1" stop-color="#ffe3b0" stop-opacity="0"/></linearGradient>
+      <filter id="softBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="10"/></filter>
+    </defs>
+    <path d="M0 880 Q300 840 620 868 Q800 884 980 862 Q1250 832 1600 870 V1000 H0 Z" fill="url(#groundG)"/>
+    <path d="M0 935 Q300 902 560 936 Q300 962 0 952 Z" fill="#b6c3ea" opacity=".35" filter="url(#softBlur)"/>
+    <path d="M1000 925 Q1300 893 1600 928 V962 Q1300 950 1000 940 Z" fill="#b6c3ea" opacity=".35" filter="url(#softBlur)"/>
+    <ellipse cx="640" cy="912" rx="170" ry="30" fill="url(#lampPool)"/>
+    <!-- lamp -->
+    <path d="M618 588 L560 905 L720 905 L662 588 Z" fill="url(#lampCone)" filter="url(#softBlur)" class="lamp-light"/>
+    <circle cx="640" cy="566" r="78" fill="url(#lampHalo)" class="lamp-light"/>
+    <rect x="626" y="896" width="28" height="14" rx="3" fill="#20263b"/>
+    <rect x="634" y="600" width="12" height="300" fill="#262c43"/>
+    <rect x="631" y="640" width="18" height="6" rx="2" fill="#20263b"/>
+    <rect x="631" y="840" width="18" height="8" rx="2" fill="#20263b"/>
+    <path d="M622 600 H658 L652 588 H628 Z" fill="#20263b"/>
+    <path d="M624 588 L620 548 H660 L656 588 Z" fill="#ffe6ad"/>
+    <path d="M640 548 V588 M630 548 L628 588 M650 548 L652 588" stroke="#262c43" stroke-width="2"/>
+    <path d="M614 550 L640 530 L666 550 Z" fill="#20263b"/>
+    <path d="M616 548 Q640 520 664 548 Q652 542 640 543 Q628 542 616 548 Z" fill="#f4f7ff"/>
+    <circle cx="640" cy="526" r="4" fill="#20263b"/>
+    <path d="M626 896 Q640 886 654 896 Z" fill="#f4f7ff"/>
+  </svg>
+  <div class="deco glints" id="snow-glints" aria-hidden="true"></div>
+
+  <header class="snow-head" id="snow-head">
+    <h2 class="title">let it snow</h2>
+    <p class="sub">tap the snowballs ❄ &amp; touch the snowman</p>
+  </header>
+
+  <!-- the snowman: back layer (arms), still layer (snow body), front layer (face, scarf, hat) -->
+  <div class="sm" id="snowman">
+    <div class="sm-shadow" id="sm-shadow"></div>
+    <div class="sm-body" id="sm-body">
+      <svg class="sm-l sm-back" viewBox="0 0 300 400" aria-hidden="true">
+        <g class="hit">
+          <g class="sm-arm sm-arm-l">
+            <path d="M100 206 L42 170 M64 184 L52 160 M64 184 L38 188" stroke="#5b3f2e" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+            <g class="sm-star">
+              <circle cx="36" cy="160" r="28" fill="url(#sm-starGlow)"/>
+              <path d="M36 146 L39.8 155.6 L50 156.2 L42 162.6 L44.6 172.6 L36 167 L27.4 172.6 L30 162.6 L22 156.2 L32.2 155.6 Z" fill="#ffe59a" stroke="#d9a93f" stroke-width="1.6" stroke-linejoin="round"/>
+            </g>
+          </g>
+          <g class="sm-arm sm-arm-r">
+            <path d="M200 206 L256 170 M236 183 L248 160 M236 183 L262 188" stroke="#5b3f2e" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+            <path d="M250 172 Q244 156 256 150 Q269 145 273 157 L276 166 Q275 175 265 177 Q254 179 250 172 Z" fill="url(#sm-knit)" stroke="#7d2f42" stroke-width="1.5"/>
+            <ellipse cx="249" cy="160" rx="4.5" ry="6.5" fill="url(#sm-knit)" stroke="#7d2f42" stroke-width="1.5" transform="rotate(-28 249 160)"/>
+          </g>
+        </g>
+      </svg>
+      <svg class="sm-l sm-still" viewBox="0 0 300 400" aria-hidden="true">
+        <defs>
+          <radialGradient id="sm-snow" cx="62%" cy="28%" r="80%"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#f3f6fd"/><stop offset=".82" stop-color="#d4dcf2"/><stop offset="1" stop-color="#b5c1e5"/></radialGradient>
+          <linearGradient id="sm-warm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffd6a0" stop-opacity=".55"/><stop offset=".38" stop-color="#ffd6a0" stop-opacity="0"/></linearGradient>
+          <linearGradient id="sm-carrot" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f9a04a"/><stop offset="1" stop-color="#d9662a"/></linearGradient>
+          <radialGradient id="sm-starGlow"><stop offset="0" stop-color="#ffe9a8" stop-opacity=".9"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/></radialGradient>
+          <linearGradient id="sm-hatShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".14"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#0b1030" stop-opacity=".3"/></linearGradient>
+          <pattern id="sm-knit" width="12" height="16" patternUnits="userSpaceOnUse"><rect width="12" height="16" fill="#c4566e"/><rect y="10" width="12" height="6" fill="#f3e6cf"/><path d="M0 2 l3 3 l3 -3 l3 3 l3 -3 M0 6 l3 3 l3 -3 l3 3 l3 -3" stroke="#a9435b" stroke-width="1.1" fill="none"/></pattern>
+          <pattern id="sm-hatKnit" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#cfd3de"/><rect width="14" height="6" fill="#3a3d49"/><path d="M0 9 l3.5 3 l3.5 -3 l3.5 3 l3.5 -3" stroke="#b5bacb" stroke-width="1" fill="none"/></pattern>
+          <filter id="sm-lumpy" x="-8%" y="-8%" width="116%" height="116%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <filter id="sm-grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="4" result="t"/><feColorMatrix in="t" type="matrix" values="0 0 0 0 0.45  0 0 0 0 0.52  0 0 0 0 0.78  0 0 0 0.9 -0.35" result="c"/><feComposite in="c" in2="SourceAlpha" operator="in"/></filter>
+          <filter id="sm-blur4" x="-40%" y="-80%" width="180%" height="260%"><feGaussianBlur stdDeviation="4"/></filter>
+          <filter id="sm-blur2" x="-40%" y="-80%" width="180%" height="260%"><feGaussianBlur stdDeviation="2.2"/></filter>
+        </defs>
+        <g class="hit">
+          <g filter="url(#sm-lumpy)">
+            <ellipse cx="150" cy="318" rx="80" ry="76" fill="url(#sm-snow)"/>
+            <circle cx="150" cy="212" r="58" fill="url(#sm-snow)"/>
+            <circle cx="150" cy="124" r="46" fill="url(#sm-snow)"/>
+          </g>
+          <g opacity=".45" filter="url(#sm-grain)">
+            <ellipse cx="150" cy="318" rx="80" ry="76"/><circle cx="150" cy="212" r="58"/><circle cx="150" cy="124" r="46"/>
+          </g>
+          <g fill="url(#sm-warm)">
+            <ellipse cx="150" cy="318" rx="80" ry="76"/><circle cx="150" cy="212" r="58"/><circle cx="150" cy="124" r="46"/>
+          </g>
+          <ellipse cx="150" cy="172" rx="36" ry="9" fill="#8fa0d0" opacity=".45" filter="url(#sm-blur4)"/>
+          <ellipse cx="150" cy="268" rx="50" ry="10" fill="#8fa0d0" opacity=".45" filter="url(#sm-blur4)"/>
+          <g fill="#25252d"><ellipse cx="150" cy="198" rx="5.5" ry="5"/><ellipse cx="151" cy="220" rx="5.8" ry="5.2"/><ellipse cx="149" cy="242" rx="5.4" ry="5"/></g>
+          <g fill="#fff" opacity=".45"><circle cx="152" cy="196.5" r="1.4"/><circle cx="153" cy="218.5" r="1.4"/><circle cx="151" cy="240.5" r="1.4"/></g>
+          <path d="M56 394 Q70 380 96 385 Q120 372 150 381 Q182 372 206 385 Q232 380 246 394 Z" fill="#f2f5fd" filter="url(#sm-lumpy)"/>
+        </g>
+      </svg>
+      <svg class="sm-l sm-front" viewBox="0 0 300 400" aria-hidden="true">
+        <g class="hit">
+          <g class="sm-scarf-tail">
+            <path d="M168 176 L178 246 L200 240 L186 172 Z" fill="url(#sm-knit)" stroke="#7d2f42" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M180 246 l-1 9 M185 245 l0 9 M190 244 l1 9 M195 242 l2 8" stroke="#c4566e" stroke-width="2.4" stroke-linecap="round"/>
+          </g>
+          <path d="M104 160 Q150 184 196 160 L199 178 Q150 204 101 178 Z" fill="url(#sm-knit)" stroke="#7d2f42" stroke-width="1.5" stroke-linejoin="round"/>
+          <ellipse cx="178" cy="181" rx="10" ry="9" fill="url(#sm-knit)" stroke="#7d2f42" stroke-width="1.5"/>
+          <g class="sm-cheeks" filter="url(#sm-blur2)"><ellipse cx="121" cy="142" rx="9" ry="5.5" fill="#f2a0b4"/><ellipse cx="179" cy="142" rx="9" ry="5.5" fill="#f2a0b4"/></g>
+          <g id="sm-eyes">
+            <g class="sm-eyes-open">
+              <ellipse cx="132" cy="123" rx="6" ry="7" fill="#25252d"/><ellipse cx="168" cy="123" rx="6" ry="7" fill="#25252d"/>
+              <circle cx="134.5" cy="120" r="2" fill="#fff"/><circle cx="170.5" cy="120" r="2" fill="#fff"/>
+            </g>
+            <g class="sm-eyes-happy" stroke="#25252d" stroke-width="3.6" stroke-linecap="round" fill="none"><path d="M125 125 q7 -9 14 0"/><path d="M161 125 q7 -9 14 0"/></g>
+          </g>
+          <g class="sm-nose">
+            <path d="M150 133 L197 141 Q199 143 197 145 L150 148 Z" fill="url(#sm-carrot)"/>
+            <path d="M161 136 l1.5 9 M172 138 l1.2 7 M183 140 l1 4.5" stroke="#b9561f" stroke-width="1.2" stroke-linecap="round"/>
+          </g>
+          <g class="sm-mouth-dots" fill="#25252d"><circle cx="134" cy="156" r="2.7"/><circle cx="141" cy="160.5" r="2.7"/><circle cx="150" cy="162" r="2.7"/><circle cx="159" cy="160.5" r="2.7"/><circle cx="166" cy="156" r="2.7"/></g>
+          <g class="sm-mouth-open"><path d="M136 154 Q150 172 164 154 Q150 159 136 154 Z" fill="#3b2431"/><path d="M143 164 Q150 168 157 164 Q150 161 143 164 Z" fill="#e98ba0"/></g>
+          <g class="sm-hat">
+            <g class="sm-ear sm-ear-l"><path d="M112 88 L113 44 Q115 36 122 41 L144 66 Z" fill="url(#sm-hatKnit)" stroke="#262a36" stroke-width="2.2" stroke-linejoin="round"/><path d="M110 48 Q114 36 124 42 Q118 44 116 50 Z" fill="#f6f8ff"/></g>
+            <g class="sm-ear sm-ear-r"><path d="M188 88 L187 44 Q185 36 178 41 L156 66 Z" fill="url(#sm-hatKnit)" stroke="#262a36" stroke-width="2.2" stroke-linejoin="round"/><path d="M190 48 Q186 36 176 42 Q182 44 184 50 Z" fill="#f6f8ff"/></g>
+            <path d="M102 98 Q100 58 150 54 Q200 58 198 98 Z" fill="url(#sm-hatKnit)" stroke="#262a36" stroke-width="2.2" stroke-linejoin="round"/>
+            <path d="M102 98 Q100 58 150 54 Q200 58 198 98 Z" fill="url(#sm-hatShade)"/>
+            <path d="M122 62 Q150 50 178 62 Q170 68 150 66 Q130 68 122 62 Z" fill="#f6f8ff"/>
+            <rect x="98" y="90" width="104" height="17" rx="8.5" fill="#e2e5ed" stroke="#262a36" stroke-width="2.2"/>
+            <path d="M106 93 v11 M112 93 v11 M118 93 v11 M124 93 v11 M130 93 v11 M136 93 v11 M142 93 v11 M148 93 v11 M154 93 v11 M160 93 v11 M166 93 v11 M172 93 v11 M178 93 v11 M184 93 v11 M190 93 v11 M196 93 v11" stroke="#c4c9d7" stroke-width="1.6" stroke-linecap="round"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="sm-bubble" id="sm-bubble" aria-live="polite"></div>
+  </div>
+
+  <div class="fg-flakes" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="field" id="field"></div>
+  <div class="phrase" id="phrase" aria-live="polite"></div>
+  <button class="next" type="button" data-go="hub">next <span class="arrow">→</span></button>
+</section>
+
+<!-- ============ cake ============ -->
+<section class="screen" data-screen="cake" aria-label="a little cake">
+  <div class="bg bg-cozy"></div>
+  <div class="deco sparks" id="cake-sparks" aria-hidden="true"></div>
+  <div class="inner">
+    <header class="cake-head">
+      <h2 class="title">make a wish</h2>
+      <p class="sub" id="cake-hint">tap the cake to blow the candles</p>
+    </header>
+    <div class="cake-layout">
+      <button class="cake" id="cake" type="button" aria-label="Blow the candles">
+        <svg viewBox="0 0 300 320" aria-hidden="true">
+          <defs>
+            <linearGradient id="chocA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6e3d29"/><stop offset="1" stop-color="#43231a"/></linearGradient>
+            <linearGradient id="chocB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a4630"/><stop offset="1" stop-color="#4d291c"/></linearGradient>
+            <linearGradient id="ganache" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3e2015"/><stop offset="1" stop-color="#2a140c"/></linearGradient>
+            <linearGradient id="sideShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".3"/><stop offset=".28" stop-color="#000" stop-opacity="0"/><stop offset=".62" stop-color="#fff" stop-opacity=".07"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient>
+            <radialGradient id="flameG" cx="50%" cy="68%" r="62%"><stop offset="0" stop-color="#fffbe6"/><stop offset=".45" stop-color="#ffd76a"/><stop offset="1" stop-color="#ff9a3c"/></radialGradient>
+            <radialGradient id="halo"><stop offset="0" stop-color="#ffe9a8" stop-opacity=".9"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/></radialGradient>
+            <pattern id="candleStripe" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><rect width="10" height="10" fill="#fbf6ec"/><rect width="4" height="10" fill="#b84a62"/></pattern>
+          </defs>
+          <ellipse class="cake-shadow" cx="150" cy="303" rx="128" ry="12" fill="#1f2a44" opacity=".22"/>
+          <g class="cake-body">
+            <ellipse cx="150" cy="288" rx="132" ry="20" fill="#f7f1e6" stroke="#232a3b" stroke-width="3"/>
+            <ellipse cx="150" cy="285" rx="112" ry="13" fill="#ece3d3"/>
+            <!-- bottom tier -->
+            <path d="M38 200 V270 A112 17 0 0 0 262 270 V200 Z" fill="url(#chocA)"/>
+            <path d="M38 200 V270 A112 17 0 0 0 262 270 V200 Z" fill="url(#sideShade)"/>
+            <ellipse cx="150" cy="200" rx="112" ry="17" fill="url(#ganache)"/>
+            <path d="M38 200 A112 17 0 0 0 262 200 L262 210 A112 17 0 0 1 38 210 Z" fill="url(#ganache)"/>
+            <g fill="#2e160d">
+              <rect x="54" y="212" width="12" height="22" rx="6"/><rect x="78" y="216" width="12" height="28" rx="6"/>
+              <rect x="102" y="218" width="12" height="16" rx="6"/><rect x="126" y="219" width="12" height="25" rx="6"/>
+              <rect x="152" y="219" width="12" height="18" rx="6"/><rect x="176" y="218" width="12" height="27" rx="6"/>
+              <rect x="200" y="217" width="12" height="16" rx="6"/><rect x="226" y="214" width="12" height="24" rx="6"/>
+            </g>
+            <text class="cake-name" x="150" y="272" text-anchor="middle">Nadir</text>
+            <g>
+              <rect x="48" y="240" width="9" height="3.5" rx="1.75" fill="#f3d27a" transform="rotate(20 52 242)"/>
+              <rect x="66" y="258" width="9" height="3.5" rx="1.75" fill="#efa8b6" transform="rotate(-30 70 260)"/>
+              <rect x="90" y="250" width="9" height="3.5" rx="1.75" fill="#fbf6ec" transform="rotate(60 94 252)"/>
+              <rect x="206" y="250" width="9" height="3.5" rx="1.75" fill="#efa8b6" transform="rotate(-50 210 252)"/>
+              <rect x="228" y="262" width="9" height="3.5" rx="1.75" fill="#f3d27a" transform="rotate(20 232 264)"/>
+              <rect x="244" y="238" width="9" height="3.5" rx="1.75" fill="#fbf6ec" transform="rotate(70 248 240)"/>
+            </g>
+            <!-- top tier -->
+            <path d="M80 130 V186 A70 11 0 0 0 220 186 V130 Z" fill="url(#chocB)"/>
+            <path d="M80 130 V186 A70 11 0 0 0 220 186 V130 Z" fill="url(#sideShade)"/>
+            <g fill="#fbf1df" stroke="#e2cfae" stroke-width="1">
+              <circle cx="84" cy="190" r="6.5"/><circle cx="96" cy="193" r="6.5"/><circle cx="108" cy="195" r="6.5"/><circle cx="120" cy="196" r="6.5"/>
+              <circle cx="132" cy="197" r="6.5"/><circle cx="144" cy="197" r="6.5"/><circle cx="156" cy="197" r="6.5"/><circle cx="168" cy="197" r="6.5"/>
+              <circle cx="180" cy="196" r="6.5"/><circle cx="192" cy="195" r="6.5"/><circle cx="204" cy="193" r="6.5"/><circle cx="216" cy="190" r="6.5"/>
+            </g>
+            <ellipse cx="150" cy="130" rx="72" ry="12" fill="url(#ganache)"/>
+            <path d="M78 130 A72 12 0 0 0 222 130 L222 138 A72 12 0 0 1 78 138 Z" fill="url(#ganache)"/>
+            <g fill="#2e160d">
+              <rect x="86" y="141" width="12" height="18" rx="6"/><rect x="106" y="144" width="12" height="26" rx="6"/>
+              <rect x="130" y="146" width="12" height="15" rx="6"/><rect x="154" y="146" width="12" height="28" rx="6"/>
+              <rect x="178" y="145" width="12" height="18" rx="6"/><rect x="200" y="142" width="12" height="23" rx="6"/>
+            </g>
+            <ellipse cx="128" cy="126" rx="30" ry="3.5" fill="#fff" opacity=".16"/>
+            <!-- cream + cherries -->
+            <g fill="#fbf1df" stroke="#e2cfae" stroke-width="1">
+              <ellipse cx="94" cy="129" rx="11" ry="7"/><ellipse cx="94" cy="123" rx="7" ry="5"/>
+              <ellipse cx="206" cy="129" rx="11" ry="7"/><ellipse cx="206" cy="123" rx="7" ry="5"/>
+            </g>
+            <path d="M94 112 q3 -10 10 -14" stroke="#4f6b2f" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M206 112 q3 -10 10 -14" stroke="#4f6b2f" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="94" cy="115" r="6.5" fill="#c23a4c"/><circle cx="92" cy="113" r="1.8" fill="#fff" opacity=".7"/>
+            <circle cx="206" cy="115" r="6.5" fill="#c23a4c"/><circle cx="204" cy="113" r="1.8" fill="#fff" opacity=".7"/>
+            <!-- candles -->
+            <g class="candles">
+              <g transform="translate(124 0)">
+                <rect x="-5" y="92" width="10" height="38" rx="3" fill="url(#candleStripe)" stroke="#232a3b" stroke-width="1.5"/>
+                <line x1="0" y1="92" x2="0" y2="86" stroke="#2a2c36" stroke-width="2"/>
+                <circle class="halo" cx="0" cy="78" r="20" fill="url(#halo)"/>
+                <g class="flame-wrap"><path class="flame" d="M0 64 C8 74 8 84 0 87 C-8 84 -8 74 0 64 Z" fill="url(#flameG)"/></g>
+                <g class="smoke"><circle cx="0" cy="80" r="3"/><circle cx="2" cy="80" r="4"/><circle cx="-2" cy="80" r="3.5"/></g>
+              </g>
+              <g transform="translate(150 -4)">
+                <rect x="-5" y="92" width="10" height="38" rx="3" fill="url(#candleStripe)" stroke="#232a3b" stroke-width="1.5"/>
+                <line x1="0" y1="92" x2="0" y2="86" stroke="#2a2c36" stroke-width="2"/>
+                <circle class="halo" cx="0" cy="78" r="20" fill="url(#halo)"/>
+                <g class="flame-wrap"><path class="flame" d="M0 64 C8 74 8 84 0 87 C-8 84 -8 74 0 64 Z" fill="url(#flameG)"/></g>
+                <g class="smoke"><circle cx="0" cy="80" r="3"/><circle cx="2" cy="80" r="4"/><circle cx="-2" cy="80" r="3.5"/></g>
+              </g>
+              <g transform="translate(176 0)">
+                <rect x="-5" y="92" width="10" height="38" rx="3" fill="url(#candleStripe)" stroke="#232a3b" stroke-width="1.5"/>
+                <line x1="0" y1="92" x2="0" y2="86" stroke="#2a2c36" stroke-width="2"/>
+                <circle class="halo" cx="0" cy="78" r="20" fill="url(#halo)"/>
+                <g class="flame-wrap"><path class="flame" d="M0 64 C8 74 8 84 0 87 C-8 84 -8 74 0 64 Z" fill="url(#flameG)"/></g>
+                <g class="smoke"><circle cx="0" cy="80" r="3"/><circle cx="2" cy="80" r="4"/><circle cx="-2" cy="80" r="3.5"/></g>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </button>
+
+      <div class="player" id="player">
+        <div class="cover" id="cover">
+          <div class="vid-frame"><div id="yt"></div></div>
+          <div class="cover-art" aria-hidden="true"></div>
+          <div class="lyrics" id="lyrics" aria-hidden="true"><div class="lyrics-bg"></div><div class="lyrics-track" id="lyrics-track"></div></div>
+          <button class="cover-btn" id="cover-btn" type="button" aria-label="Play">
+            <span class="cover-icon">
+              <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+              <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.6v14H7zM13.4 5H17v14h-3.6z"/></svg>
+            </span>
+          </button>
+          <p class="direct-hint">tap the video to play ♪</p>
+        </div>
+        <div class="track">
+          <div class="track-top"><span class="now"><span class="now-off">♪ tap to play</span><span class="now-on">♪ now playing</span></span><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></div>
+          <p class="song">Olivia Rodrigo - honeybee</p>
+          <div class="bar"><span id="bar-fill"></span></div>
+          <div class="time"><span id="t-cur">0:00</span><span id="t-dur">0:00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="next" type="button" data-go="hub">next <span class="arrow">→</span></button>
+</section>
+
+<!-- ============ last page ============ -->
+<section class="screen" data-screen="final" aria-label="for you">
+  <div class="bg bg-night"></div>
+  <div class="moonglow" aria-hidden="true"></div>
+  <div class="deco twinkles" id="final-stars" aria-hidden="true"></div>
+  <div class="inner">
+    <div class="final-text">
+      <p class="f1 reveal">for you, Nadir</p>
+      <p class="f2 reveal">you are my home.</p>
+      <p class="f3 reveal">smile for me ♡</p>
+      <img class="chibi final-chibi reveal" src="img/chibi.png" alt="" width="236" height="236">
+      <button class="again reveal" type="button" data-go="hub">↺ back to the surprises</button>
+    </div>
+  </div>
+</section>
+
+<!-- small music pill shown on other pages while the song is on -->
+<div class="mini" id="mini">
+  <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="mini-name">honeybee</span>
+  <button class="mini-btn" id="mini-btn" type="button" aria-label="Pause">
+    <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+    <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.6v14H7zM13.4 5H17v14h-3.6z"/></svg>
+  </button>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
